@@ -35,7 +35,7 @@ export default function Chart({ list, type }: ChartProps) {
         outerRadius={80}
         label
       >
-        {chartData.map((entry, index) => (
+        {chartData.map((_, index) => (
           <Cell key={index} fill={COLORS[index % COLORS.length]} />
         ))}
       </Pie>
