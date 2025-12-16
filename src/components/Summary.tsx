@@ -19,9 +19,11 @@ export default function summary({ list }: SummaryProps) {
 
   return (
     <div>
-      <p>總收入：${totalIncome}</p>
-      <p>總支出：${totalExpense}</p>
-      <p style={{ color: balance >= 0 ? 'green' : 'red' }}>結餘：${balance}</p>
+      <p className='text-income'>總收入：${totalIncome}</p>
+      <p className='text-expense'>總支出：${totalExpense}</p>
+      <p className={balance >= 0 ? 'text-income' : 'text-expense'}>
+        結餘：${balance}
+      </p>
     </div>
   );
 }
