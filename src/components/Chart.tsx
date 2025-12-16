@@ -21,26 +21,58 @@ export default function Chart({ list, type }: ChartProps) {
     value,
   }));
 
+  const total = chartData.reduce((sum, item) => sum + item.value, 0);
+
   if (chartData.length === 0)
-    return <p>沒有 {type === 'income' ? '收入' : '支出'} 資料</p>;
+    return (
+      <p className='text-black'>
+        沒有 {type === 'income' ? '收入' : '支出'} 資料
+      </p>
+    );
 
   return (
-    <PieChart width={300} height={300}>
-      <Pie
-        data={chartData}
-        dataKey='value'
-        nameKey='name'
-        cx='50%'
-        cy='50%'
-        outerRadius={80}
-        label
+    <div className='relative flex flex-col items-center'>
+      <PieChart width={350} height={350}>
+        <Pie
+          data={chartData}
+          dataKey='value'
+          nameKey='name'
+          cx='50%'
+          cy='50%'
+          innerRadius={50}
+          outerRadius={80}
+          label={({ name, value }) => `${name}: $${value}`}
+        >
+          {chartData.map((_, index) => (
+            <Cell key={index} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+        <text
+          x='50%'
+          y='50%'
+          textAnchor='middle'
+          dominantBaseline='central'
+          className='fill-gray-800'
+        >
+          <tspan x='50%' dy='-1.6em' fontSize='12'>
+            總{type === 'income' ? '收入' : '支出'}
+          </tspan>
+          <tspan x='50%' dy='1.2em' fontSize='18' fontWeight='bold'>
+            ${total}
+          </tspan>
+        </text>
+        {/* <Tooltip /> */}
+        <Legend
+          formatter={(value, entry) => `${value} $${entry.payload.value}`}
+        />
+      </PieChart>
+      <span
+        className={`font-bold text-lg ${
+          type === 'income' ? 'text-income' : 'text-expense'
+        }`}
       >
-        {chartData.map((_, index) => (
-          <Cell key={index} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-      <Tooltip />
-      <Legend />
-    </PieChart>
+        總{type === 'income' ? '收入' : '支出'}-${total}
+      </span>
+    </div>
   );
 }
