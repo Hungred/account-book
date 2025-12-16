@@ -14,7 +14,8 @@ export default function App() {
     title: string,
     amount: number,
     type: RecordType,
-    category: Category
+    category: Category,
+    date: string
   ) => {
     const newItem: RecordItem = {
       id: Date.now(),
@@ -22,6 +23,7 @@ export default function App() {
       amount,
       type,
       category,
+      date,
     };
     setList((prev) => [...prev, newItem]);
   };
@@ -56,28 +58,43 @@ export default function App() {
   }, [list]);
 
   return (
-    <div className='max-w-3xl mx-auto p-4'>
-      <h1 className='text-3xl font-bold mb-4 text-center'>記帳程式</h1>
-      <div className='mb-6'>
-        <RecordForm
-          onAdd={handleAdd}
-          editingItem={editingItem}
-          onUpdate={handleUpdate}
-        ></RecordForm>
-      </div>
-      <div className='mb-6'>
-        <Summary list={list}></Summary>
-      </div>
-      <div className='mb-6'>
-        <RecordList
-          list={list}
-          onRemove={handleRemove}
-          onEdit={handleEdit}
-        ></RecordList>
-      </div>
-      <div className='flex justify-around flex-wrap gap-4'>
-        <Chart list={list} type='income' />
-        <Chart list={list} type='expense' />
+    <div className='min-h-screen flex justify-center items-center'>
+      <div className='w-full max-w-2xl bg-[#dedbd2] p-6 rounded-lg shadow'>
+        <div className='max-w-3xl mx-auto p-4'>
+          <h1 className='text-3xl font-bold mb-4 text-center text-primary'>
+            我的記帳本
+          </h1>
+          <div className='mb-6'>
+            <RecordForm
+              onAdd={handleAdd}
+              editingItem={editingItem}
+              onUpdate={handleUpdate}
+            ></RecordForm>
+          </div>
+          <div className='mb-6'>
+            <Summary list={list}></Summary>
+          </div>
+          <div className='mb-6'>
+            {list.length === 0 ? (
+              <div className='text-center text-gray-400 py-10'>
+                <p className='text-lg mb-2'>還沒有記錄</p>
+                <p className='text-sm text-black-700'>
+                  點擊上方「新增記錄」開始你的記帳吧！
+                </p>
+              </div>
+            ) : (
+              <RecordList
+                list={list}
+                onRemove={handleRemove}
+                onEdit={handleEdit}
+              ></RecordList>
+            )}
+          </div>
+          <div className='flex justify-around flex-wrap gap-4'>
+            <Chart list={list} type='income' />
+            <Chart list={list} type='expense' />
+          </div>
+        </div>
       </div>
     </div>
   );

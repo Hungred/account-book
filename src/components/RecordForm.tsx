@@ -8,7 +8,8 @@ export interface RecordFormProps {
     title: string,
     amount: number,
     type: RecordType,
-    category: Category
+    category: Category,
+    date: string
   ) => void;
   editingItem?: RecordItem | null;
   onUpdate?: (updated: RecordItem) => void;
@@ -23,6 +24,9 @@ export default function RecordForm({
   const [amount, setAmount] = useState<string>('');
   const [type, setType] = useState<RecordType>('expense');
   const [category, setCategory] = useState<Category>('其他');
+  const [date, setDate] = useState(
+    () => new Date().toISOString().split('T')[0]
+  ); // 預設今天
 
   const handleAddOrUpdate = () => {
     if (!title || !amount) return;
@@ -34,13 +38,15 @@ export default function RecordForm({
         amount: Number(amount),
         type,
         category,
+        date,
       });
     } else {
-      onAdd(title, Number(amount), type, category);
+      onAdd(title, Number(amount), type, category, date);
     }
     setTitle('');
     setAmount('');
     setType('expense');
+    setDate(new Date().toISOString().split('T')[0]);
   };
 
   useEffect(() => {
@@ -53,14 +59,39 @@ export default function RecordForm({
 
   return (
     <div className='flex flex-col gap-2'>
+      <div className='flex gap-2 mb-4'>
+        <button
+          type='button'
+          className={`flex-1 py-2 rounded-lg text-white transition
+      ${type === 'income' ? 'bg-income' : 'bg-gray-300 text-gray-700'}`}
+          onClick={() => setType('income')}
+        >
+          收入
+        </button>
+
+        <button
+          type='button'
+          className={`flex-1 py-2 rounded-lg text-white transition
+      ${type === 'expense' ? 'bg-expense' : 'bg-gray-300 text-gray-700'}`}
+          onClick={() => setType('expense')}
+        >
+          支出
+        </button>
+      </div>
       <input
-        className='border p-2 rounded'
+        className='text-black border-black w-full mb-3 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
+        type='date'
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+      />
+      <input
+        className='text-black border-black w-full mb-3 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder='項目'
       />
       <select
-        className='border p-2 rounded'
+        className='text-black border-black w-full mb-3 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
         value={category}
         onChange={(e) => setCategory(e.target.value as Category)}
       >
@@ -70,36 +101,16 @@ export default function RecordForm({
         <option value='其他'>其他</option>
       </select>
       <input
-        className='border p-2 rounded'
+        className='text-black border-black w-full mb-4 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
         placeholder='金額'
       />
-      <div className='flex gap-4'>
-        <label>
-          <input
-            type='radio'
-            value='expense'
-            checked={type === 'expense'}
-            onChange={() => setType('expense')}
-          />{' '}
-          支出
-        </label>
-        <label>
-          <input
-            type='radio'
-            value='income'
-            checked={type === 'income'}
-            onChange={() => setType('income')}
-          />{' '}
-          收入
-        </label>
-      </div>
       <button
-        className='bg-green-500 text-white p-2 rounded mt-2'
+        className='w-full bg-primary hover:bg-secondary text-white py-2 rounded-lg font-semibold transition'
         onClick={handleAddOrUpdate}
       >
-        {editingItem ? '更新' : '新增'}
+        {editingItem ? '更新記錄' : '新增記錄'}
       </button>
     </div>
   );
