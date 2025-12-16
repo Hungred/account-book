@@ -1,4 +1,4 @@
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Legend } from 'recharts';
 import type { RecordItem } from './RecordList';
 
 interface ChartProps {
@@ -61,9 +61,10 @@ export default function Chart({ list, type }: ChartProps) {
             ${total}
           </tspan>
         </text>
-        {/* <Tooltip /> */}
         <Legend
-          formatter={(value, entry) => `${value} $${entry.payload.value}`}
+          formatter={(value, entry) =>
+            `${value} $${entry?.payload?.value ?? 0}`
+          }
         />
       </PieChart>
       <span
