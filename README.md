@@ -1,73 +1,54 @@
-# React + TypeScript + Vite
+# Account Book (記帳本)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+簡潔的 React + TypeScript 記帳範例應用，使用 Tailwind CSS，資料儲存在 localStorage。支援新增/編輯/刪除記錄、總覽與圖表（Chart）顯示。已將全域色系放在 src/index.css，方便一次調整整個應用配色。
 
-Currently, two official plugins are available:
+## 主要功能
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 新增 / 編輯 / 刪除記帳項目（收入 / 支出）
+- 分類（食物、交通、娛樂、其他）
+- 本地儲存（localStorage）
+- Summary（收入/支出/結餘）
+- Chart（依類型顯示圖表）
+- 全域主題變數（透過 src/index.css 調整配色）
 
-## React Compiler
+## 技術棧
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React + TypeScript
+- Tailwind CSS
+- (可選) Chart library（專案中 Chart 元件會從 CSS 變數讀色）
 
-## Expanding the ESLint configuration
+## 快速開始（macOS）
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. 取得專案
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+   - git clone <repo-url>
+   - cd account-book
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+2. 安裝依賴
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+   - npm install
+     或
+   - pnpm install
+     或
+   - yarn
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. 啟動開發伺服器
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+   - npm run dev
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+4. 建置（生產）
+   - npm run build
+   - (預覽) npm run preview
+
+> 若 package.json 的 script 名稱不同，請以專案內的 scripts 為準。
+
+## 檔案結構（重要）
+
+- src/
+  - index.css // 全域樣式與主題變數
+  - App.tsx
+  - components/
+    - RecordForm.tsx
+    - RecordList.tsx
+    - Summary.tsx
+    - Chart.tsx
