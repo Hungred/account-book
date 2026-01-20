@@ -42,14 +42,16 @@ export default function App() {
   };
 
   useEffect(() => {
-    const data = localStorage.getItem('records');
-    if (!data) return;
-
     try {
-      const parsed: RecordItem[] = JSON.parse(data);
-      setList(parsed);
+      const data = localStorage.getItem('records');
+      if (data) {
+        const parsed: RecordItem[] = JSON.parse(data);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setList(parsed);
+        }
+      }
     } catch (err) {
-      console.error('Failed to parse localStorage data', err);
+      console.error('Failed to load records from localStorage', err);
     }
   }, []);
 
